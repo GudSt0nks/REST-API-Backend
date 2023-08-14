@@ -5,6 +5,7 @@ import { createUserInput, createUserSchema } from "./schema/user.schema";
 import { createSessionHandler, deleteSessionHandler, getUserSessionHandler } from "./controller/session.controller";
 import { createSessionSchema } from "./schema/session.schema";
 import requireUser from "./middleware/requireUser";
+import { createPostHandler, deletePostHandler, getPostsHandler } from "./controller/post.controller"
 
 function routes(app: Express){
     
@@ -18,11 +19,21 @@ function routes(app: Express){
     //create new session
     app.post('/api/sessions', validateResource(createSessionSchema), createSessionHandler);
 
-    //get user's sessions
+    // get user's sessions
     app.get('/api/sessions', requireUser, getUserSessionHandler);
 
     // log out
     app.delete('/api/sessions', requireUser, deleteSessionHandler);
+
+    // create new post
+    app.post('/api/posts', requireUser, createPostHandler);
+
+    // get posts
+    app.get('/api/posts', requireUser, getPostsHandler);
+
+    // delete post
+    app.delete('/api/posts', requireUser, deletePostHandler);
+
 }
 
 export default routes;
